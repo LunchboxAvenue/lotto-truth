@@ -2,3 +2,36 @@
 //$body-bg: #000;
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
+
+.main-info {
+  padding: 2rem 4rem;
+}
+
+.heading {
+  position: relative;
+  pointer-events: none;
+
+  .inner {
+    pointer-events: auto;
+
+    .anchor-wrapper {
+      position: relative;
+      display: inline-block;
+      padding-right: 1em;
+  
+      .anchor {
+        font-size: 90%;
+        position: absolute;
+        right: .3em;
+        padding-top: .1em;
+        opacity: 0;
+      }
+
+      &:hover {
+        .anchor {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+}
