@@ -16,8 +16,6 @@ import { Formik, FieldArray } from 'formik'
 import { uniq } from 'lodash'
 
 const Wheeling: React.FC = () => {
-  const [numbersToPlay, setNumbersToPlay] = useState([] as number[])
-
   return (
     <Container fluid>
       <Row className="flex-xl-nowrap">
@@ -75,7 +73,9 @@ const Wheeling: React.FC = () => {
                       lotterySystem: 'Pick 5 Lottery',
                       wheelName: '4 if 4',
                       combinationId: '-1',
-                      selectedNumbers: numbersToPlay
+                      selectedNumbers: [],
+                      minNumber: 1,
+                      maxNumber: 50
                     }}
                   >
                     {({
@@ -94,12 +94,13 @@ const Wheeling: React.FC = () => {
                       })
 
                       const resultingStructureCopy = pickSixNumbers.filter(x => x.name === values.wheelName)
+                      const numbersToSelect = resultingStructureCopy && resultingStructureCopy.length > 0 ? resultingStructureCopy[0].numbers : 0
                       const selectedStructure = resultingStructureCopy && resultingStructureCopy.length > 0 && resultingStructureCopy[0].structure
 
                       return (
                         <Form noValidate onSubmit={handleSubmit}>
                           <Form.Row>
-                            <Form.Group as={Col} md="4" controlId="lotterySystemSelect">
+                            <Form.Group as={Col} md="2" controlId="lotterySystemSelect">
                               <Form.Label>Lottery System</Form.Label>
                               <Form.Control
                                 as="select"
@@ -113,7 +114,7 @@ const Wheeling: React.FC = () => {
                               </Form.Control>
                             </Form.Group>
                             {values && values.lotterySystem === 'Pick 5 Lottery' && (
-                              <Form.Group as={Col} md="4" controlId="exampleForm.ControlSelect2">
+                              <Form.Group as={Col} md="2" controlId="exampleForm.ControlSelect2">
                                 <Form.Label>Guarantee</Form.Label>
                                 <Form.Control
                                   as="select"
@@ -127,6 +128,24 @@ const Wheeling: React.FC = () => {
                                 </Form.Control>
                               </Form.Group>
                             )}
+                            <Form.Group as={Col} md="2" controlId="minNumbers">
+                              <Form.Label>Min. Number</Form.Label>
+                              <Form.Control
+                                type="number"
+                                name="minNumber"
+                                value={values.minNumber.toString()}
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
+                            <Form.Group as={Col} md="2" controlId="maxNumber">
+                              <Form.Label>Max. Number</Form.Label>
+                              <Form.Control
+                                type="number"
+                                name="maxNumber"
+                                value={values.maxNumber.toString()}
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
                             <Form.Group as={Col} md="4" controlId="combinationId">
                               <Form.Label>Wheel Name</Form.Label>
                               <Form.Control
@@ -142,7 +161,7 @@ const Wheeling: React.FC = () => {
                               </Form.Control>
                             </Form.Group>
                             <Form.Group as={Col} md="4" controlId="selectedStructure">
-                              {selectedStructure && selectedStructure.length && numbersToPlay && numbersToPlay.length > 0 && (
+                              {selectedStructure && selectedStructure.length && values.selectedNumbers.length > 0 && (
                                 <Table striped bordered hover size="sm">
                                   <thead>
                                     <tr>
@@ -153,7 +172,7 @@ const Wheeling: React.FC = () => {
                                   <tbody>
                                     {selectedStructure.map((array, index) => {
                                       let arr: number[] = []
-                                      array.forEach(pseudoIndex => arr.push(numbersToPlay[pseudoIndex - 1]))
+                                      array.forEach(pseudoIndex => arr.push(values.selectedNumbers[pseudoIndex - 1]))
                                       return (
                                         <tr key={index}>
                                           <td>{index + 1}</td>
@@ -184,11 +203,11 @@ const Wheeling: React.FC = () => {
                                               <InputGroup.Prepend>
                                                 <InputGroup.Text id="inputGroupPrepend">CH</InputGroup.Text>
                                               </InputGroup.Prepend>
-                                            <Form.Control
+                                              <Form.Control
                                                 type="text"
                                                 aria-describedby="inputGroupPrepend"
                                                 name={`selectedNumbers.${index}`}
-                                                value={num.toString()}
+                                                value={num}
                                                 onChange={handleChange}
                                               />
                                             </InputGroup>
@@ -206,9 +225,7 @@ const Wheeling: React.FC = () => {
                                   variant="primary"
                                   disabled={values.combinationId === '-1'}
                                   onClick={() => {
-                                    const nums = getRandomNumberSample(1, 50, 10)
-                                    setNumbersToPlay(nums)
-                                    setFieldValue('selectedNumbers', nums)
+                                    setFieldValue('selectedNumbers', getRandomNumberSample(values.minNumber, values.maxNumber, numbersToSelect))
                                   }}
                                 >
                                   Randomise
