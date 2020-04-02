@@ -9,8 +9,10 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Badge from 'react-bootstrap/Badge'
 import Table from 'react-bootstrap/Table'
+import Alert from 'react-bootstrap/Alert'
 import InputGroup from 'react-bootstrap/InputGroup'
 import getRandomNumberSample from '../utils/numberGenerator'
+import pickFiveNumbers from '../utils/abbreviatedWheels/pickFiveNumbers'
 import pickSixNumbers from '../utils/abbreviatedWheels/pickSixNumbers'
 import { Formik, FieldArray } from 'formik'
 import { uniq } from 'lodash'
@@ -44,6 +46,9 @@ const Wheeling: React.FC = () => {
             This website uses library called <a href="https://github.com/ckknight/random-js" target="_blank" rel="noopener noreferrer"><span>random.js</span></a> to
             generate random numbers.
           </p>
+          <Alert variant='info'>
+            Please note that you can always win more than the minimum prize guaranteed by the wheel.
+          </Alert>
           <h3 id="howtouse" className="heading">
             <div className="inner">
               <span className="anchor-wrapper">How to use
@@ -54,8 +59,9 @@ const Wheeling: React.FC = () => {
           <p>
             1) Select lottery system you are going to play <br />
             2) Select a "guarantee" available for particular lottery <br />
-            3) Select the amount of numbers to guess and number of combinations from list of available wheels <br />
-            4) Press 'Randomise' and random numbers will populate your tickets
+            3) Set the Minimum and Maximum numbers in the lottery you are participating in <br />
+            3) Select the available wheels <br />
+            4) Press 'Randomise' and random numbers will populate your tickets <br />
             5) You can manually enter your "lucky" numbers.
           </p>
           <Accordion defaultActiveKey="0">
@@ -71,11 +77,12 @@ const Wheeling: React.FC = () => {
                     onSubmit={console.log}
                     initialValues={{
                       lotterySystem: 'Pick 5 Lottery',
-                      wheelName: '4 if 4',
+                      wheelName: '3-win if 3',
                       combinationId: '-1',
                       selectedNumbers: [],
                       minNumber: 1,
-                      maxNumber: 50
+                      maxNumber: 50,
+                      ticketCost: 0
                     }}
                   >
                     {({
@@ -84,18 +91,23 @@ const Wheeling: React.FC = () => {
                       values,
                       setFieldValue
                     }) => {
-                      console.log(values)
-                      const lotteries = ['Pick 5 Lottery']
-                      const guarantees = uniq(pickSixNumbers.map(x => x.name))
-                      const wheelsList = pickSixNumbers.filter(x => x.name === values.wheelName)
+                      const lotteries = ['Pick 5 Lottery', 'Pick 6 Lottery']
+                      const wheels = values.lotterySystem === 'Pick 5 Lottery' ? pickFiveNumbers : pickSixNumbers
+                      const guarantees = uniq(wheels.map(x => x.name))
+                      const wheelsList = wheels.filter(x => x.name === values.wheelName)
 
                       var availableWheelList = wheelsList.map((val, index) => {
                         return { id: val.id, numbers: val.numbers, combinations: val.combinations }
                       })
 
-                      const resultingStructureCopy = pickSixNumbers.filter(x => x.name === values.wheelName)
+                      const resultingStructureCopy = wheels.filter(x => x.name === values.wheelName)
                       const numbersToSelect = resultingStructureCopy && resultingStructureCopy.length > 0 ? resultingStructureCopy[0].numbers : 0
                       const selectedStructure = resultingStructureCopy && resultingStructureCopy.length > 0 && resultingStructureCopy[0].structure
+
+                      let totalTicketCost = 0
+                      if (resultingStructureCopy && resultingStructureCopy.length > 0) {
+                        totalTicketCost = resultingStructureCopy[0].combinations * values.ticketCost
+                      }
 
                       return (
                         <Form noValidate onSubmit={handleSubmit}>
@@ -113,7 +125,7 @@ const Wheeling: React.FC = () => {
                                 })}
                               </Form.Control>
                             </Form.Group>
-                            {values && values.lotterySystem === 'Pick 5 Lottery' && (
+                            {values && values.lotterySystem && (
                               <Form.Group as={Col} md="2" controlId="exampleForm.ControlSelect2">
                                 <Form.Label>Guarantee</Form.Label>
                                 <Form.Control
@@ -128,8 +140,8 @@ const Wheeling: React.FC = () => {
                                 </Form.Control>
                               </Form.Group>
                             )}
-                            <Form.Group as={Col} md="2" controlId="minNumbers">
-                              <Form.Label>Min. Number</Form.Label>
+                            <Form.Group as={Col} md="1" controlId="minNumbers">
+                              <Form.Label>Min</Form.Label>
                               <Form.Control
                                 type="number"
                                 name="minNumber"
@@ -137,12 +149,21 @@ const Wheeling: React.FC = () => {
                                 onChange={handleChange}
                               />
                             </Form.Group>
-                            <Form.Group as={Col} md="2" controlId="maxNumber">
-                              <Form.Label>Max. Number</Form.Label>
+                            <Form.Group as={Col} md="1" controlId="maxNumber">
+                              <Form.Label>Max</Form.Label>
                               <Form.Control
                                 type="number"
                                 name="maxNumber"
                                 value={values.maxNumber.toString()}
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
+                            <Form.Group as={Col} md="2" controlId="ticketCost">
+                              <Form.Label>1 Ticket Cost</Form.Label>
+                              <Form.Control
+                                type="number"
+                                name="ticketCost"
+                                value={values.ticketCost.toString()}
                                 onChange={handleChange}
                               />
                             </Form.Group>
@@ -201,7 +222,7 @@ const Wheeling: React.FC = () => {
                                           <React.Fragment key={index}>
                                             <InputGroup>
                                               <InputGroup.Prepend>
-                                                <InputGroup.Text id="inputGroupPrepend">CH</InputGroup.Text>
+                                                <InputGroup.Text id="inputGroupPrepend">#</InputGroup.Text>
                                               </InputGroup.Prepend>
                                               <Form.Control
                                                 type="text"
@@ -219,7 +240,7 @@ const Wheeling: React.FC = () => {
                                 )}
                               />
                             </Form.Group>
-                            <Form.Group as={Col} md="4" controlId="exampleForm.ControlSelect3">
+                            <Form.Group as={Col} md="2" controlId="exampleForm.ControlSelect3">
                               <ButtonToolbar>
                                 <Button
                                   variant="primary"
@@ -231,6 +252,9 @@ const Wheeling: React.FC = () => {
                                   Randomise
                                 </Button>
                               </ButtonToolbar>
+                            </Form.Group>
+                            <Form.Group as={Col} md="2">
+                              <Form.Label>Total tickets cost: € {values.combinationId === '-1' ? 0 : totalTicketCost}</Form.Label>
                             </Form.Group>
                           </Form.Row>
                           {/* <Button type="submit">Submit form</Button> */}
@@ -248,7 +272,7 @@ const Wheeling: React.FC = () => {
                 </Accordion.Toggle>
               </Card.Header>
               <Accordion.Collapse eventKey="1">
-                <Card.Body>This is unbelievably expensive, don't even try, pal</Card.Body>
+                <Card.Body>This is too expensive, don't even try, pal</Card.Body>
               </Accordion.Collapse>
             </Card>
           </Accordion>

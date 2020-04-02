@@ -19,14 +19,14 @@ const Navigation: React.FC = () => {
             <NavItem>
               <Nav.Link as={Link} to="/wheeling">Wheeling</Nav.Link>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <Nav.Link as={Link} to="/about">About</Nav.Link>
-            </NavItem>
+            </NavItem> */}
           </Nav>
-          <Form inline>
+          {/* <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
             <Button variant="outline-success">Search</Button>
-          </Form>
+          </Form> */}
         </Navbar.Collapse>
       </Navbar>
       <Suspense fallback={<div>Loading...</div>}>
