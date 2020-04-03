@@ -100,7 +100,7 @@ const Wheeling: React.FC = () => {
                         return { id: val.id, numbers: val.numbers, combinations: val.combinations }
                       })
 
-                      const resultingStructureCopy = wheels.filter(x => x.name === values.wheelName)
+                      const resultingStructureCopy = wheels.filter(x => x.id === values.combinationId)
                       const numbersToSelect = resultingStructureCopy && resultingStructureCopy.length > 0 ? resultingStructureCopy[0].numbers : 0
                       const selectedStructure = resultingStructureCopy && resultingStructureCopy.length > 0 && resultingStructureCopy[0].structure
 
