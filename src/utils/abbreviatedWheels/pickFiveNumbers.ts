@@ -123,7 +123,7 @@ const pickFiveNumbers = [
     id: '14',
     name: '4-win if 4',
     numbers: 10,
-    combinations: 52,
+    combinations: 51,
     structure: [
       [1, 2, 3, 4, 7],
       [1, 2, 3, 5, 6],
@@ -165,7 +165,7 @@ const pickFiveNumbers = [
       [2, 5, 6, 8, 10],
       [2, 5, 7, 8, 9],
       [2, 5, 7, 9, 10],
-      [2, 6, 5, 6, 8],
+      //[2, 6, 5, 6, 8], // unnecessary
       [3, 4, 5, 6, 7],
       [3, 4, 7, 8, 9],
       [3, 4, 7, 8, 10],
