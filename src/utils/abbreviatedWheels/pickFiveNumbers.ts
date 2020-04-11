@@ -3,6 +3,9 @@ const pickFiveNumbers = [
     // (a 3-win if 3 of your numbers are drawn)
     id: '10',
     name: '3-win if 3',
+    winGuarranteeNumbers: 3,
+    guessedNumbers: 3,
+    numbersToGuess: 5,
     numbers: 9,
     combinations: 12,
     structure: [
@@ -24,6 +27,9 @@ const pickFiveNumbers = [
     // (a 3-win if 3 of your numbers are drawn)
     id: '11',
     name: '3-win if 3 (double)',
+    winGuarranteeNumbers: 3,
+    guessedNumbers: 3,
+    numbersToGuess: 5,
     numbers: 9,
     combinations: 18,
     structure: [
@@ -52,6 +58,9 @@ const pickFiveNumbers = [
     // A05080404
     id: '12',
     name: '4-win if 4',
+    winGuarranteeNumbers: 4,
+    guessedNumbers: 4,
+    numbersToGuess: 5,
     numbers: 8,
     combinations: 20,
     structure: [
@@ -82,6 +91,9 @@ const pickFiveNumbers = [
     // A05090404
     id: '13',
     name: '4-win if 4',
+    winGuarranteeNumbers: 4,
+    guessedNumbers: 4,
+    numbersToGuess: 5,
     numbers: 9,
     combinations: 30,
     structure: [
@@ -122,6 +134,9 @@ const pickFiveNumbers = [
     // A05100404
     id: '14',
     name: '4-win if 4',
+    winGuarranteeNumbers: 4,
+    guessedNumbers: 4,
+    numbersToGuess: 5,
     numbers: 10,
     combinations: 51,
     structure: [
@@ -165,7 +180,6 @@ const pickFiveNumbers = [
       [2, 5, 6, 8, 10],
       [2, 5, 7, 8, 9],
       [2, 5, 7, 9, 10],
-      //[2, 6, 5, 6, 8], // unnecessary
       [3, 4, 5, 6, 7],
       [3, 4, 7, 8, 9],
       [3, 4, 7, 8, 10],
@@ -184,6 +198,9 @@ const pickFiveNumbers = [
     // A05110405
     id: '15',
     name: '4-win if 5',
+    winGuarranteeNumbers: 4,
+    guessedNumbers: 5,
+    numbersToGuess: 5,
     numbers: 11,
     combinations: 22,
     structure: [
@@ -216,6 +233,9 @@ const pickFiveNumbers = [
     // A05120405
     id: '16',
     name: '4-win if 5',
+    winGuarranteeNumbers: 4,
+    guessedNumbers: 5,
+    numbersToGuess: 5,
     numbers: 12,
     combinations: 35,
     structure: [
@@ -261,6 +281,9 @@ const pickFiveNumbers = [
     // A05160304
     id: '17',
     name: '3-win if 4',
+    winGuarranteeNumbers: 3,
+    guessedNumbers: 4,
+    numbersToGuess: 5,
     numbers: 16,
     combinations: 35,
     structure: [
@@ -306,6 +329,9 @@ const pickFiveNumbers = [
     // A05150304
     id: '18',
     name: '3-win if 4',
+    winGuarranteeNumbers: 3,
+    guessedNumbers: 4,
+    numbersToGuess: 5,
     numbers: 15,
     combinations: 30,
     structure: [
