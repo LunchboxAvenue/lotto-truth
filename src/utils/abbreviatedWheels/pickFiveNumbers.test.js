@@ -109,4 +109,14 @@ describe('pick five numbers wheels tests', () => {
     expect(uniq(usedCombinations).length).toEqual(wheel.combinations)
     expect(uniq(incorrectNumbers)).toEqual([])
   })
+  
+  it.skip('Wheel with id = 18 guarantees 3-win if 4 numbers are guessed problematic', () => {
+    const { wheel, allPossibleCombinations } = setup('18')
+    expect(wheel).toBeDefined()
+    expect(allPossibleCombinations).toBeDefined()
+    
+    const { incorrectNumbers, usedCombinations } = getIncorrectNumbers(wheel, allPossibleCombinations)
+    expect(uniq(usedCombinations).length).toEqual(wheel.combinations)
+    expect(uniq(incorrectNumbers)).toEqual([])
+  })
 })
